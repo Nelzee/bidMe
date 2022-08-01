@@ -5,9 +5,13 @@
   align-items: center;
   color: var(--orange-yellow-crayola);
   font-size: 1.5rem;
+  padding: 20px;
 }
 
 .nav_items {
   display: flex;
   justify-content: space-between;
+}
+.nav_items li {
+  padding-inline: 10px;
 }
