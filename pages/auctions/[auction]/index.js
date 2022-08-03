@@ -1,16 +1,17 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { Fragment } from "react";
+import axios from "axios";
 
-const Index = () => {
+const Index = ({ auction }) => {
   const router = useRouter();
-  console.log(router.query.auction);
+  const id = router.query.auction;
 
   return (
     <div>
       <Fragment>
-        <Link href="beta/45">
-          <h3>Lot 45</h3>
+        <Link href={`beta/${id}`}>
+          <h3>{auction.title}</h3>
         </Link>
       </Fragment>
     </div>
@@ -18,3 +19,13 @@ const Index = () => {
 };
 
 export default Index;
+export const getServerSideProps = async ({ params }) => {
+  const auction = await axios(
+    `http://localhost:3000/api/auction/${params.auction}`
+  );
+  return {
+    props: {
+      auction: auction.data,
+    },
+  };
+};

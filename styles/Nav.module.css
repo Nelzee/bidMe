@@ -1,11 +1,11 @@
 .nav_container {
-  background-color: var(--indigo-dye);
+  background-color: var(--beige);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--orange-yellow-crayola);
+  color: var(--indigo-dye);
   font-size: 1.5rem;
-  padding: 20px;
+  padding: 10px;
 }
 
 .nav_items {
