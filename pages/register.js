@@ -5,9 +5,11 @@ export default function Register() {
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const [validPass, setValidPass] = useState(true);
+  const [validConfirmPass, setValidConfirmPass] = useState(true);
 
   const handleCheck = (e) => {
     switch (e.target.name) {
@@ -15,6 +17,11 @@ export default function Register() {
         credentials.password.length > 6
           ? setValidPass(true)
           : setValidPass(false);
+        break;
+      case "confirmPassword":
+        credentials.password === credentials.confirmPassword
+          ? setValidConfirmPass(true)
+          : setValidConfirmPass(false);
         break;
 
       default:
@@ -37,7 +44,7 @@ export default function Register() {
       },
     };
 
-    const { data } = await axios.post("api/login", { credentials }, config);
+    const { data } = await axios.post("api/register", { credentials }, config);
     console.log(data);
   };
 
@@ -62,8 +69,17 @@ export default function Register() {
             name="password"
           />
         </div>
-
-        <button>Login</button>
+        <div>
+          {!validConfirmPass && <p style={{ color: "red" }}>not valid</p>}
+          <input
+            onBlur={handleCheck}
+            onChange={handleChange}
+            type="password"
+            placeholder="Confirm Password"
+            name="confirmPassword"
+          />
+        </div>
+        <button>Register</button>
       </form>
     </div>
   );
