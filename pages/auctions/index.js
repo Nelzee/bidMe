@@ -2,20 +2,23 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { Fragment } from "react";
 import axios from "axios";
+import Meta from "../../components/Meta";
 
 const Index = ({ auctions }) => {
   const router = useRouter();
 
   return (
     <div>
+      <Meta title="Auctions" content="Auctions" />
       <Fragment>
-        {auctions.map((auction) => {
-          return (
-            <h3 key={auction._id}>
-              <Link href={`auctions/${auction._id}`}>{auction.title}</Link>
-            </h3>
-          );
-        })}
+        {auctions &&
+          auctions.map((auction) => {
+            return (
+              <h3 key={auction._id}>
+                <Link href={`auctions/${auction._id}`}>{auction.title}</Link>
+              </h3>
+            );
+          })}
       </Fragment>
     </div>
   );

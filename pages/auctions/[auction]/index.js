@@ -1,31 +1,36 @@
-import { useRouter } from "next/router";
-import Link from "next/link";
-import { Fragment } from "react";
 import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import Meta from "../../../components/Meta";
 
-const Index = ({ auction }) => {
+const Index = ({ lots }) => {
   const router = useRouter();
-  const id = router.query.auction;
-
   return (
     <div>
-      <Fragment>
-        <Link href={`beta/${id}`}>
-          <h3>{auction.title}</h3>
-        </Link>
-      </Fragment>
+      <Meta
+        title={lots[0]?.auction.title || "Auction"}
+        content={lots[0]?.auction.title || "Auction"}
+      />
+      {lots.map((lot) => (
+        <div key={lot._id}>
+          <h3>{lot.title}</h3>
+          <Link href={lot.auction.title.split(" ").join("-") + "/" + lot._id}>
+            <button>View Lot</button>
+          </Link>
+        </div>
+      ))}
     </div>
   );
 };
 
 export default Index;
 export const getServerSideProps = async ({ params }) => {
-  const auction = await axios(
-    `http://localhost:3000/api/auction/${params.auction}`
+  const lots = await axios.get(
+    `http://localhost:3000/api/Lots/${params.auction}`
   );
   return {
     props: {
-      auction: auction.data,
+      lots: lots.data,
     },
   };
 };
