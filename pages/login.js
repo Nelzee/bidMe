@@ -1,7 +1,13 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import Meta from "../components/Meta";
+import { addbid } from "../redux/bidsSlice";
+import { login } from "../redux/userSlice";
 
 export default function Register() {
+  const dispatch = useDispatch();
+
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -38,11 +44,12 @@ export default function Register() {
     };
 
     const { data } = await axios.post("api/login", { credentials }, config);
-    console.log(data);
+    dispatch(login(data));
   };
 
   return (
     <div>
+      <Meta title="Login | Bidme" />
       <form onSubmit={handleSubmit}>
         <div>
           <input
