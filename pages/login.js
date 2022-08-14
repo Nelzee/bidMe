@@ -1,4 +1,5 @@
 import axios from "axios";
+import Link from "next/link";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Meta from "../components/Meta";
@@ -44,6 +45,7 @@ export default function Register() {
     };
 
     const { data } = await axios.post("api/login", { credentials }, config);
+    console.log(data);
     dispatch(login(data));
   };
 
@@ -72,6 +74,8 @@ export default function Register() {
 
         <button>Login</button>
       </form>
+
+      <Link href="/profile">Profile</Link>
     </div>
   );
 }

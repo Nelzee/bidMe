@@ -13,10 +13,16 @@ const Handler = async (req, res) => {
   if (user && (await user.matchPassword(password))) {
     res.json({
       _id: user._id,
-      email: user.email,
+      firstName: user.firstName || "",
+      lastName: user.lastName || "",
+      email: user.email || "",
+      phonenumber: user.phonenumber || "",
+      idNumber: user.idNumber || "",
     });
   } else {
-    res.status(401);
+    res.status(401).res.json({
+      error: "user not found",
+    });
     throw new Error("Invalid Email or Password");
   }
 };
