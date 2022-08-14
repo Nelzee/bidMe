@@ -6,7 +6,7 @@ import Meta from "../../../components/Meta";
 const Index = ({ lots }) => {
   const router = useRouter();
   return (
-    <div>
+    <div className="flex flex-col items-center min-h-screen mt-24 -z-50">
       <Meta
         title={lots[0]?.auction.title || "Auction"}
         content={lots[0]?.auction.title || "Auction"}

@@ -6,6 +6,10 @@ const AuctionSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    details: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
