@@ -3,7 +3,16 @@ import Link from "next/link";
 import { Fragment, useState } from "react";
 import axios from "axios";
 import Meta from "../../components/Meta";
-import { Pagination, Grid, Card, Text, Button, Row } from "@nextui-org/react";
+import {
+  Pagination,
+  Grid,
+  Card,
+  Text,
+  Button,
+  Row,
+  Modal,
+  Checkbox,
+} from "@nextui-org/react";
 import PreviewAuction from "../../components/PreviewAuction";
 
 const Index = ({ auctions }) => {
@@ -12,7 +21,7 @@ const Index = ({ auctions }) => {
   const [showPreview, setShowPreview] = useState(false);
 
   const handleNav = (e, link) => {
-    setShowPreview(true);
+    setShowPreview((showPreview) => !showPreview);
     console.log(link);
   };
 
@@ -30,8 +39,9 @@ const Index = ({ auctions }) => {
             return (
               <Grid css={{ justifyContent: "center" }} key={auction._id} xs={4}>
                 <Card
-                  onClick={<PreviewAuction />}
-                  isPressable
+                  onClick={(e) => {
+                    handleNav(e, auction._id);
+                  }}
                   css={{ mw: "330px" }}
                 >
                   <Card.Header>
@@ -48,7 +58,8 @@ const Index = ({ auctions }) => {
                   </Card.Body>
                   <Card.Divider />
                   <Card.Footer>
-                    <Row justify="flex-end">
+                    <Row justify="space-between" align="center">
+                      <PreviewAuction id={auction._id} />
                       <Text>Auction Ends soon</Text>
                     </Row>
                   </Card.Footer>
@@ -61,7 +72,11 @@ const Index = ({ auctions }) => {
         onChange={handlePagin}
         color="secondary"
         controls={false}
-        total={auctions.length / 6}
+        total={
+          auctions.length % 6 > 0
+            ? auctions.length / 6 + 1
+            : auctions.length / 6
+        }
         page={pagination}
         initialPage={1}
       />
