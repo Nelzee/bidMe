@@ -5,10 +5,35 @@ import { useDispatch } from "react-redux";
 import Meta from "../components/Meta";
 import { addbid } from "../redux/bidsSlice";
 import { login } from "../redux/userSlice";
-import { Textarea, Grid, Input, Button, Loading } from "@nextui-org/react";
+import {
+  Textarea,
+  Grid,
+  Input,
+  Button,
+  Loading,
+  useInput,
+} from "@nextui-org/react";
 
 export default function Register() {
   const dispatch = useDispatch();
+  const { value, reset, bindings } = useInput("");
+
+  const validateEmail = (value) => {
+    return value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i);
+  };
+
+  const helper = React.useMemo(() => {
+    if (!value)
+      return {
+        text: "",
+        color: "",
+      };
+    const isValid = validateEmail(value);
+    return {
+      text: isValid ? "Correct email" : "Enter a valid email",
+      color: isValid ? "success" : "error",
+    };
+  }, [value]);
 
   const loading = true;
   const [credentials, setCredentials] = useState({
@@ -66,10 +91,17 @@ export default function Register() {
               bordered
               labelPlaceholder="Email"
               color="secondary"
+              {...bindings}
+              shadow={false}
+              onClearClick={reset}
+              status={helper.color}
+              helperColor={helper.color}
+              label="Email"
+              placeholder="With regex validation"
             />
           </Grid>
           <Grid xs={12}>
-            <Input
+            <Input.Password
               onChange={handleChange}
               name="password"
               type="password"
@@ -78,6 +110,8 @@ export default function Register() {
               bordered
               color="secondary"
               labelPlaceholder="Password"
+              clearable
+              placeholder="Enter your password with eye"
             />
           </Grid>
           <Grid xs={12}>

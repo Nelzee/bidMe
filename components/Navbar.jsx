@@ -25,7 +25,7 @@ const Navbar = () => {
         </ul>
         <div className={navStyles.nav_menu}>
           <ul className={navStyles.nav_items}>
-            {!userInfo ? (
+            {Object.keys(userInfo).length === 0 ? (
               <>
                 <li>
                   <Link href="/login">Login</Link>

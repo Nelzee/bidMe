@@ -59,7 +59,7 @@ const Index = ({ auctions }) => {
                   <Card.Divider />
                   <Card.Footer>
                     <Row justify="space-between" align="center">
-                      <PreviewAuction id={auction._id} />
+                      <PreviewAuction title={auction.title} id={auction._id} />
                       <Text>Auction Ends soon</Text>
                     </Row>
                   </Card.Footer>
