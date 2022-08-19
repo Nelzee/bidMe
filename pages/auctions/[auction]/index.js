@@ -15,18 +15,19 @@ import {
 
 const Index = ({ lots }) => {
   const router = useRouter();
+  console.log(lots);
   return (
     <div className="flex flex-col items-center max-w-screen-lg min-h-screen mx-auto mt-24 -z-50">
       <Meta
         title={lots[0]?.auction.title || "Auction"}
         content={lots[0]?.auction.title || "Auction"}
       />
-      <h2 className="text-4xl">Lots</h2>
+      <h2 className="my-8 text-4xl">{lots[0]?.auction.title || "Auction"}</h2>
       <Grid.Container gap={2} justify="center">
         {lots &&
           lots.map((lot) => {
             return (
-              <Grid css={{ justifyContent: "center" }} key={lot.title} xs={4}>
+              <Grid css={{ justifyContent: "center" }} key={lot._id} xs={4}>
                 <Card gap={2} xs={4} css={{ w: "100%", h: "400px" }}>
                   <Card.Header
                     css={{ position: "absolute", zIndex: 1, top: 5 }}
@@ -41,7 +42,7 @@ const Index = ({ lots }) => {
                         New
                       </Text>
                       <Text h3 color="black">
-                        Acme camera
+                        {lot.title}
                       </Text>
                     </Col>
                   </Card.Header>
@@ -94,6 +95,13 @@ const Index = ({ lots }) => {
             );
           })}
       </Grid.Container>
+      <Pagination
+        color="secondary"
+        controls={false}
+        total={lots.length % 6 > 0 ? lots.length / 6 + 1 : lots.length / 6}
+        page={1}
+        initialPage={1}
+      />
     </div>
   );
 };
