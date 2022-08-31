@@ -1,10 +1,7 @@
-import path from "path";
-import multer from "multer";
-import dbConnect from "../../../utils/mongo";
 import nc from "next-connect";
 import onError from "../../../middleware/errorMiddleware";
-
-const Handler = nc(onError);
+import multer from "multer";
+import path from "path";
 
 export const config = {
   api: {
@@ -12,29 +9,37 @@ export const config = {
   },
 };
 
-const storage = multer.diskStorage({
-  destination: (req, file, callback) => {
-    callback(null, "../../../../public/images");
+const handler = nc(onError);
+
+let storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/images");
   },
-  filename: (req, file, callback) => {
-    callback(
+  filename: function (req, file, cb) {
+    cb(
       null,
-      file.originalname + "_" + Date.now() + path.extname(file.originalname)
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
     );
   },
 });
 
-const upload = multer({ storage: storage });
+let upload = multer({
+  storage: storage,
+});
 
 let uploadFile = upload.single("file");
-Handler.use(uploadFile);
-Handler = async (req, res) => {
-  await dbConnect();
+handler.use(uploadFile);
+handler.post(async (req, res) => {
+  console.log("req.file", req.file);
+  console.log("req.body", req.body);
+  let url = "http://" + req.headers.host;
+  let filename = req.file.filename;
 
-  console.log("req", req.file);
-  console.log("body", req.body);
+  result = "success";
+  res.status(200).send({
+    result: result,
+    url: url + "/public/" + req.file.filename,
+  });
+});
 
-  res.status(200).send("Upload success");
-};
-
-export default Handler;
+export default handler;

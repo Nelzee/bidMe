@@ -4,9 +4,10 @@ import axios from "axios";
 
 const Addauction = () => {
   const [lotInfo, setLotInfo] = useState({
+    auction_id: "",
     name: "",
     details: "",
-    file: "",
+    files: [],
   });
 
   const handleChange = (e) => {
@@ -17,7 +18,8 @@ const Addauction = () => {
 
   const handleFileChange = (e) => {
     setLotInfo((lotInfo) => {
-      return { ...lotInfo, file: e.target.files[0] };
+      console.log(e.target.files);
+      return { ...lotInfo, files: e.target.files };
     });
   };
 
@@ -25,13 +27,10 @@ const Addauction = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("name", lotInfo.name);
-    formData.append("details", lotInfo.details);
-    formData.append("file", lotInfo.file);
-
-    console.log(formData);
-
-    const { data } = await axios.post("../api/Lot/addlot", formData);
+    for (const file of lotInfo.files) {
+      formData.append("file", file);
+      const { data } = await axios.post("../api/Lot/addlot", formData);
+    }
   };
   return (
     <div className="flex flex-col items-center min-h-screen mt-16 -z-50">
@@ -52,7 +51,9 @@ const Addauction = () => {
           <Grid xs={12}>
             <Input
               onChange={handleFileChange}
+              multiple
               filename="file"
+              accept="image/*"
               type={"file"}
               width="100%"
               size="lg"
